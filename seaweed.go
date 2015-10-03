@@ -30,6 +30,18 @@ func main() {
 			Description: "View the forecast for a spot",
 			Action:      forecast,
 		},
+		{
+			Name:        "today",
+			Usage:       "today <spotId>",
+			Description: "View today's forecast for a spot",
+			Action:      today,
+		},
+		{
+			Name:        "tomorrow",
+			Usage:       "tomorrow <spotId>",
+			Description: "View tomorrow's forecast for a spot",
+			Action:      tomorrow,
+		},
 	}
 	app.Run(os.Args)
 }
@@ -42,8 +54,34 @@ func forecast(c *cli.Context) {
 		panic(err)
 	}
 
+	printForecasts(spot, forecast)
+}
+
+func today(c *cli.Context) {
+	client := client(c)
+	spot := c.Args().First()
+	forecast, err := client.Today(spot)
+	if err != nil {
+		panic(err)
+	}
+
+	printForecasts(spot, forecast)
+}
+
+func tomorrow(c *cli.Context) {
+	client := client(c)
+	spot := c.Args().First()
+	forecast, err := client.Tomorrow(spot)
+	if err != nil {
+		panic(err)
+	}
+
+	printForecasts(spot, forecast)
+}
+
+func printForecasts(spot string, forecasts []seaweed.Forecast) {
 	s := []map[string]interface{}{}
-	for _, each := range forecast {
+	for _, each := range forecasts {
 		m := map[string]interface{}{}
 		m["Date"] = time.Unix(each.LocalTimestamp, 0).Format("Mon 01/02 03:04 pm")
 		m["Solid Rating"] = each.SolidRating
@@ -58,7 +96,6 @@ func forecast(c *cli.Context) {
 	} else {
 		fmt.Printf("No forecast found for spot: %s\n", spot)
 	}
-
 }
 
 func client(c *cli.Context) *seaweed.Client {
