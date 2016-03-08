@@ -1,6 +1,6 @@
 [{
   "timestamp":1443592800,
-  "localTimestamp":1457406000,
+  "localTimestamp":today_timestamp,
   "issueTimestamp":1443592800,
   "fadedRating":3,
   "solidRating":0,

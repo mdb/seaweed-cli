@@ -7,11 +7,12 @@ setup() {
 }
 
 teardown() {
-  #rm test/tmp/*
+  rm test/tmp/*
   echo $output
 }
 
 fixture() {
   cp test/{fixtures,tmp}/seaweed_391
-  #touch test/tmp/$@
+  today=`date +%s`
+  sed -i '.bak' "s/today_timestamp/$today/g" test/tmp/seaweed_391
 }
