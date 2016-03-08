@@ -1,0 +1,18 @@
+language: go
+
+sudo: false
+
+before_script:
+  - git clone --depth 1 https://github.com/sstephenson/bats.git
+  - export PATH=$PATH:bats/bin
+
+go:
+  - 1.5
+  - tip
+
+script:
+  - make test
+
+matrix:
+  allow_failures:
+    - go: tip
