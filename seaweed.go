@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"fmt"
+	"net/http"
 	"os"
 	"strconv"
 	"time"
@@ -22,6 +23,16 @@ func main() {
 			Name:   "apiKey",
 			Usage:  "Magic Seaweed API key",
 			EnvVar: "MAGIC_SEAWEED_API_KEY",
+		},
+		cli.StringFlag{
+			Name:   "cacheDir",
+			Usage:  "Directory to cache API responses",
+			EnvVar: "MAGIC_SEAWEED_CACHE_DIR",
+		},
+		cli.StringFlag{
+			Name:   "cacheAge",
+			Usage:  "Duration to cache API responses",
+			EnvVar: "MAGIC_SEAWEED_CACHE_AGE",
 		},
 	}
 	app.Commands = []cli.Command{
@@ -100,7 +111,33 @@ func printForecasts(spot string, forecasts []seaweed.Forecast) {
 }
 
 func client(c *cli.Context) *seaweed.Client {
-	return seaweed.NewClient(os.Getenv("MAGIC_SEAWEED_API_KEY"))
+	return &seaweed.Client{
+		os.Getenv("MAGIC_SEAWEED_API_KEY"),
+		&http.Client{},
+		cacheAge(),
+		cacheDir(),
+	}
+}
+
+func cacheAge() time.Duration {
+	var age time.Duration
+	var _ error
+
+	if os.Getenv("MAGIC_SEAWEED_CACHE_AGE") != "" {
+		age, _ = time.ParseDuration(os.Getenv("MAGIC_SEAWEED_CACHE_DIR"))
+	} else {
+		age, _ = time.ParseDuration("5m")
+	}
+
+	return age
+}
+
+func cacheDir() string {
+	if os.Getenv("MAGIC_SEAWEED_CACHE_DIR") != "" {
+		return os.Getenv("MAGIC_SEAWEED_CACHE_DIR")
+	} else {
+		return os.TempDir()
+	}
 }
 
 func concat(arr []string) string {
