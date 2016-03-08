@@ -7,3 +7,11 @@ A Golang-based command line application for fetching surf forecast data from the
 ```
 seaweed-cli --help
 ```
+
+## Development
+
+Running acceptance tests:
+
+```
+make test
+```
