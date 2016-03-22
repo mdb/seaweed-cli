@@ -41,10 +41,10 @@
     "unit":"f"
   },
   "charts":{
-    "swell":"http:\/\/hist-2.msw.ms\/wave\/750\/20-1443592800-1.gif",
-    "period":"http:\/\/hist-2.msw.ms\/wave\/750\/20-1443592800-2.gif",
-    "wind":"http:\/\/hist-2.msw.ms\/gfs\/750\/20-1443592800-4.gif",
-    "pressure":"http:\/\/hist-2.msw.ms\/gfs\/750\/20-1443592800-3.gif",
-    "sst":"http:\/\/hist-2.msw.ms\/sst\/750\/20-1443592800-10.gif"
+    "swell":"http://hist-2.msw.ms/wave/750/20-1443592800-1.gif",
+    "period":"http://hist-2.msw.ms/wave/750/20-1443592800-2.gif",
+    "wind":"http://hist-2.msw.ms/gfs/750/20-1443592800-4.gif",
+    "pressure":"http://hist-2.msw.ms/gfs/750/20-1443592800-3.gif",
+    "sst":"http://hist-2.msw.ms/sst/750/20-1443592800-10.gif"
   }
 }]
