@@ -14,11 +14,6 @@ teardown() {
 fixture() {
   cp test/{fixtures,tmp}/seaweed_391
   today=`date +%s`
-  opt=""
 
-  if [ "$(uname)" == "Darwin" ]; then
-    opt='-i "bak"'
-  fi
-
-  sed $opt "s/today_timestamp/$today/g" test/tmp/seaweed_391
+  sed -i .bak "s/today_timestamp/$today/g" test/tmp/seaweed_391
 }
