@@ -9,8 +9,8 @@ import (
 	"time"
 
 	"github.com/codegangsta/cli"
-	"github.com/crackcomm/go-clitable"
 	"github.com/mdb/seaweed"
+	"github.com/olekukonko/tablewriter"
 )
 
 func main() {
@@ -98,19 +98,25 @@ func tomorrow(c *cli.Context) error {
 }
 
 func printForecasts(spot string, forecasts []seaweed.Forecast) {
-	s := []map[string]interface{}{}
+	s := [][]string{}
 	for _, each := range forecasts {
-		m := map[string]interface{}{}
-		m["Date"] = time.Unix(each.LocalTimestamp, 0).Format("Mon 01/02 03:04 pm")
-		m["Solid Rating"] = each.SolidRating
-		m["Faded Rating"] = each.FadedRating
-		m["Primary Swell Height"] = concat([]string{strconv.FormatFloat(each.Swell.Components.Primary.Height, 'f', 2, 64), each.Swell.Unit})
-		m["Wind"] = concat([]string{strconv.Itoa(each.Wind.Speed), " ", each.Wind.Unit, " ", each.Wind.CompassDirection})
-		s = append(s, m)
+		s = append(s, []string{
+			time.Unix(each.LocalTimestamp, 0).Format("Mon 01/02 03:04 pm"),
+			strconv.Itoa(each.SolidRating),
+			strconv.Itoa(each.FadedRating),
+			concat([]string{strconv.FormatFloat(each.Swell.Components.Primary.Height, 'f', 2, 64), each.Swell.Unit}),
+			concat([]string{strconv.Itoa(each.Wind.Speed), " ", each.Wind.Unit, " ", each.Wind.CompassDirection}),
+		})
 	}
 
 	if len(s) != 0 {
-		clitable.PrintTable([]string{"Date", "Primary Swell Height", "Wind", "Solid Rating", "Faded Rating"}, s)
+		printTableWithHeaders([]string{
+			"date",
+			"solid rating",
+			"faded rating",
+			"primary swell height",
+			"wind",
+		}, s)
 	} else {
 		fmt.Printf("No forecast found for spot: %s\n", spot)
 	}
@@ -156,4 +162,12 @@ func concat(arr []string) string {
 	}
 
 	return buff.String()
+}
+
+func printTableWithHeaders(headers []string, data [][]string) {
+	table := tablewriter.NewWriter(os.Stdout)
+	table.SetHeader(headers)
+	table.AppendBulk(data)
+	table.SetRowLine(true)
+	table.Render()
 }
