@@ -38,7 +38,7 @@ func main() {
 	app.Commands = []cli.Command{
 		{
 			Name:        "forecast",
-			Usage:       "forcast <spotId>",
+			Usage:       "forecast <spotId>",
 			Description: "View the forecast for a spot",
 			Action:      forecast,
 		},
