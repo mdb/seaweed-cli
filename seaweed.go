@@ -38,7 +38,7 @@ func main() {
 	app.Commands = []cli.Command{
 		{
 			Name:        "forecast",
-			Usage:       "forecast <spotId>",
+			Usage:       "forcast <spotId>",
 			Description: "View the forecast for a spot",
 			Action:      forecast,
 		},
@@ -58,37 +58,43 @@ func main() {
 	app.Run(os.Args)
 }
 
-func forecast(c *cli.Context) {
+func forecast(c *cli.Context) error {
 	client := client(c)
 	spot := c.Args().First()
 	forecast, err := client.Forecast(spot)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	printForecasts(spot, forecast)
+
+	return nil
 }
 
-func today(c *cli.Context) {
+func today(c *cli.Context) error {
 	client := client(c)
 	spot := c.Args().First()
 	forecast, err := client.Today(spot)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	printForecasts(spot, forecast)
+
+	return nil
 }
 
-func tomorrow(c *cli.Context) {
+func tomorrow(c *cli.Context) error {
 	client := client(c)
 	spot := c.Args().First()
 	forecast, err := client.Tomorrow(spot)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	printForecasts(spot, forecast)
+
+	return nil
 }
 
 func printForecasts(spot string, forecasts []seaweed.Forecast) {
