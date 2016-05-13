@@ -135,9 +135,9 @@ func cacheAge() time.Duration {
 func cacheDir() string {
 	if os.Getenv("MAGIC_SEAWEED_CACHE_DIR") != "" {
 		return os.Getenv("MAGIC_SEAWEED_CACHE_DIR")
-	} else {
-		return os.TempDir()
 	}
+
+	return os.TempDir()
 }
 
 func concat(arr []string) string {
