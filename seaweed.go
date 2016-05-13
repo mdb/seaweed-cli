@@ -47,6 +47,12 @@ func main() {
 			Description: "View tomorrow's forecast for a spot",
 			Action:      tomorrow,
 		},
+		{
+			Name:        "weekend",
+			Usage:       "weekend <spotId>",
+			Description: "View the weekend's forecast for a spot",
+			Action:      weekend,
+		},
 	}
 	app.Run(os.Args)
 }
@@ -81,6 +87,19 @@ func tomorrow(c *cli.Context) error {
 	client := client(c)
 	spot := c.Args().First()
 	forecast, err := client.Tomorrow(spot)
+	if err != nil {
+		return err
+	}
+
+	printForecasts(spot, forecast)
+
+	return nil
+}
+
+func weekend(c *cli.Context) error {
+	client := client(c)
+	spot := c.Args().First()
+	forecast, err := client.Weekend(spot)
 	if err != nil {
 		return err
 	}
