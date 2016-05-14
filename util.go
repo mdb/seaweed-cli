@@ -18,7 +18,7 @@ func cacheAge() time.Duration {
 	var _ error
 
 	if os.Getenv("MAGIC_SEAWEED_CACHE_AGE") != "" {
-		age, _ = time.ParseDuration(os.Getenv("MAGIC_SEAWEED_CACHE_DIR"))
+		age, _ = time.ParseDuration(os.Getenv("MAGIC_SEAWEED_CACHE_AGE"))
 	} else {
 		age, _ = time.ParseDuration("5m")
 	}
