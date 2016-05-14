@@ -13,7 +13,7 @@ install: build
 uninstall:
 	rm -vf $(PREFIX)/bin/seaweed-cli
 
-unit:
+unit: dependencies
 	go test
 
 acceptance: build
