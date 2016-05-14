@@ -16,3 +16,17 @@ script:
 matrix:
   allow_failures:
     - go: tip
+
+before_deploy:
+  - make build_releases
+
+deploy:
+  provider: releases
+  skip_cleanup: true
+  file_glob: true
+  api_key:
+    secure: qWI80mildNzDjGh9C9ybZ7WZ+Dl63dAqy8i2bULR+hmHAkT5r5O0ABDxYo31/O+zdOUoL998r1JVlJHBPHVVrsmuh36DkyfTIvhdUvSp5kuU9gL/3Ay2TA7NgewEnwaMilbDCzaRQPmKWSjt27zNnKoWFCeF1fcZ0PhhIIe0fcuvCZIt/0plaTnHu8huLMEhE4fDWofhP2Hecq/OlA3qMb7g2xneFY4FruqKOFEZbPdkz4WYehFrE9YasDNqBrkmO7oRvm4KfhHeaZoD9E8p+A8ScFv4+sa3P2BjG6+//jJ525aG9aNBV1yKWUwdvrVzYlAe9yQ2Pi9OIg3Q5VFQuhNwtjYgVH3KB+FiCSwaHNP9H7stbY4Vy+Ob/9cenUhT+y1ftJ9yCehNJTHrNx7qJCCqXKvf6TZO0TFOnvlbUbzXjPygxw65cBZ2q1H9QokrGY3OfasyVQUOHTqLNHGSzH8ZAeloiIZIw4PyeY2empfDiZsAbcE1M6F3P80z4ivhijeyJF7T4W3o5QcgloVL9MfIZGcjEaM6tjwXgheWRIwXQEym0g99DnUqO9RF2qn3OKa4F7ULRk1wdBXDL1UFb5U5BFqACjJkioxSOu85iIA5Zsr3cLHee2f0OK5J6GH/6YpA3N4DXp3JkeMPNpRkhv/VrwVjAM+j7hkK2rn2atY=
+  file: release/seaweed-cli_*
+  on:
+    repo: mdb/seaweed-cli
+    tags: true
