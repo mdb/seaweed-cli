@@ -2,6 +2,7 @@ NAME=seaweed-cli
 HOMEPAGE=https://github.com/mdb/seaweed-cli
 VERSION=`cat VERSION`
 TAG=v$(VERSION)
+ARCH=$(shell uname -m)
 PREFIX=/usr/local
 
 test: unit acceptance
@@ -34,6 +35,8 @@ release: build_releases
 	rm -rf release && mkdir release
 	tar -zcf release/$(NAME)_$(VERSION)_linux_$(ARCH).tgz -C build/Linux $(NAME)
 	tar -zcf release/$(NAME)_$(VERSION)_darwin_$(ARCH).tgz -C build/Darwin $(NAME)
+
+release: build_releases
 	gh-release create mdb/$(NAME) $(VERSION) $(shell git rev-parse --abbrev-ref HEAD)
 
 .PHONY: acceptance build build_releases dependencies install test uninstall unit
