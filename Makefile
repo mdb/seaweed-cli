@@ -1,12 +1,10 @@
+NAME=seaweed-cli
 HOMEPAGE=https://github.com/mdb/seaweed-cli
-PREFIX=/usr/local
-
-COVERAGE_FILE = coverage.out
-
 VERSION=0.0.1
 TAG=v$(VERSION)
+PREFIX=/usr/local
 
-test: acceptance
+test: unit acceptance
 
 install: build
 	mkdir -p $(PREFIX)/bin
@@ -14,6 +12,9 @@ install: build
 
 uninstall:
 	rm -vf $(PREFIX)/bin/seaweed-cli
+
+unit:
+	go test
 
 acceptance: build
 	bats test
@@ -24,4 +25,4 @@ build: dependencies
 dependencies:
 	go get -t
 
-.PHONY: acceptance build dependencies install test uninstall
+.PHONY: acceptance build dependencies install test uninstall unit
