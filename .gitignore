@@ -2,3 +2,4 @@ bin
 coverage.out
 pkg
 test/tmp
+build
