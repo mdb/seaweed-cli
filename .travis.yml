@@ -11,7 +11,7 @@ go:
   - tip
 
 script:
-  - make test
+  - make
 
 matrix:
   allow_failures:

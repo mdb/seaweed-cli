@@ -4,6 +4,9 @@ VERSION=`cat VERSION`
 TAG=v$(VERSION)
 ARCH=$(shell uname -m)
 PREFIX=/usr/local
+VETARGS?=-all
+
+all: lint vet test
 
 test: unit acceptance
 
@@ -32,9 +35,30 @@ build_releases: dependencies
 
 dependencies:
 	go get -t
+	@go tool cover 2>/dev/null; if [ $$? -eq 3 ]; then \
+		go get -u golang.org/x/tools/cmd/cover; \
+	fi
+	go get github.com/golang/lint/golint
 
 release: build_releases
 	go get github.com/progrium/gh-release
 	gh-release create mdb/$(NAME) $(VERSION) $(shell git rev-parse --abbrev-ref HEAD)
+
+lint:
+	golint -set_exit_status
+
+# vet runs the Go source code static analysis tool `vet` to find
+# any common errors.
+vet:
+	@go tool vet 2>/dev/null ; if [ $$? -eq 3 ]; then \
+		go get golang.org/x/tools/cmd/vet; \
+	fi
+	@echo "go tool vet $(VETARGS)"
+	@go tool vet $(VETARGS) . ; if [ $$? -eq 1 ]; then \
+		echo ""; \
+		echo "Vet found suspicious constructs. Please check the reported constructs"; \
+		echo "and fix them if necessary before submitting the code for review."; \
+		exit 1; \
+	fi
 
 .PHONY: acceptance build build_releases dependencies install test uninstall unit
