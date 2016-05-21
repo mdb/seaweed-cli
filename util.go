@@ -91,9 +91,9 @@ func printForecasts(spot string, forecasts []seaweed.Forecast) {
 
 func client(c *cli.Context) *seaweed.Client {
 	return &seaweed.Client{
-		os.Getenv("MAGIC_SEAWEED_API_KEY"),
-		&http.Client{},
-		cacheAge(),
-		cacheDir(),
+		APIKey:     os.Getenv("MAGIC_SEAWEED_API_KEY"),
+		HTTPClient: &http.Client{},
+		CacheAge:   cacheAge(),
+		CacheDir:   cacheDir(),
 	}
 }

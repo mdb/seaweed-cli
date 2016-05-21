@@ -61,8 +61,8 @@ func TestClientWithDefaults(t *testing.T) {
 	c := getTestClient()
 	cache, _ := time.ParseDuration("5m")
 
-	if c.ApiKey != "123" {
-		t.Error("client.ApiKey should be properly set")
+	if c.APIKey != "123" {
+		t.Error("client.APIKey should be properly set")
 	}
 	if c.CacheAge != cache {
 		t.Error("client.CacheAge should default to 5m")
@@ -80,8 +80,8 @@ func TestClientWithEnvVars(t *testing.T) {
 	c := getTestClient()
 	cache, _ := time.ParseDuration("10m")
 
-	if c.ApiKey != "123" {
-		t.Error("client.ApiKey should be properly set")
+	if c.APIKey != "123" {
+		t.Error("client.APIKey should be properly set")
 	}
 	if c.CacheAge != cache {
 		t.Error("client.CacheAge should be set to $MAGIC_SEAWEED_CACHE_AGE")
