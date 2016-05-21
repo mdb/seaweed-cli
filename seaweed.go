@@ -59,6 +59,7 @@ func main() {
 
 func forecast(c *cli.Context) error {
 	client := client(c)
+	validateClient(client)
 	spot := c.Args().First()
 	forecast, err := client.Forecast(spot)
 	if err != nil {
@@ -72,6 +73,7 @@ func forecast(c *cli.Context) error {
 
 func today(c *cli.Context) error {
 	client := client(c)
+	validateClient(client)
 	spot := c.Args().First()
 	forecast, err := client.Today(spot)
 	if err != nil {
@@ -85,6 +87,7 @@ func today(c *cli.Context) error {
 
 func tomorrow(c *cli.Context) error {
 	client := client(c)
+	validateClient(client)
 	spot := c.Args().First()
 	forecast, err := client.Tomorrow(spot)
 	if err != nil {
@@ -98,6 +101,7 @@ func tomorrow(c *cli.Context) error {
 
 func weekend(c *cli.Context) error {
 	client := client(c)
+	validateClient(client)
 	spot := c.Args().First()
 	forecast, err := client.Weekend(spot)
 	if err != nil {

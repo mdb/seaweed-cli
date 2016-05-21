@@ -87,3 +87,10 @@ func client(c *cli.Context) *seaweed.Client {
 		CacheDir:   cacheDir(),
 	}
 }
+
+func validateClient(c *seaweed.Client) {
+	if c.APIKey == "" {
+		fmt.Println("\nPlease set the MAGIC_SEAWEED_API_KEY environment variable")
+		os.Exit(1)
+	}
+}
