@@ -30,3 +30,8 @@ deploy:
   on:
     repo: mdb/seaweed-cli
     tags: true
+
+notifications:
+  email:
+    on_success: never
+    on_failure: always
