@@ -9,7 +9,7 @@ import (
 func main() {
 	app := cli.NewApp()
 	app.Name = "seaweed-cli"
-	app.Version = version()
+	app.Version = "0.0.5"
 	app.Usage = "Should I go surfing?"
 	app.Flags = []cli.Flag{
 		cli.StringFlag{

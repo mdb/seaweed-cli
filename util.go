@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"os"
 	"strconv"
@@ -13,15 +12,6 @@ import (
 	"github.com/mdb/seaweed"
 	"github.com/olekukonko/tablewriter"
 )
-
-func version() string {
-	v, err := ioutil.ReadFile("VERSION")
-	if err != nil {
-		panic(err)
-	}
-
-	return string(v)
-}
 
 func cacheAge() time.Duration {
 	var age time.Duration
