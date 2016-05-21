@@ -44,7 +44,7 @@ release: build_releases
 	go get github.com/progrium/gh-release
 	gh-release create mdb/$(NAME) $(VERSION) $(shell git rev-parse --abbrev-ref HEAD)
 
-lint:
+lint: dependencies
 	golint -set_exit_status
 
 # vet runs the Go source code static analysis tool `vet` to find
