@@ -7,7 +7,7 @@ before_script:
   - export PATH=$PATH:bats/bin
 
 go:
-  - 1.5
+  - 1.8
   - tip
 
 script:
