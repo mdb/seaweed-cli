@@ -8,9 +8,10 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/codegangsta/cli"
 	"github.com/mdb/seaweed"
 	"github.com/olekukonko/tablewriter"
+	logging "github.com/op/go-logging"
+	"github.com/urfave/cli"
 )
 
 func cacheAge() time.Duration {
@@ -87,6 +88,7 @@ func client(c *cli.Context) *seaweed.Client {
 		HTTPClient: &http.Client{},
 		CacheAge:   cacheAge(),
 		CacheDir:   cacheDir(),
+		Log:        seaweed.NewLogger(logging.INFO),
 	}
 }
 

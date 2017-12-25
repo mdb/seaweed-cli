@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/codegangsta/cli"
 	"github.com/mdb/seaweed"
+	"github.com/urfave/cli"
 )
 
 func TestConcat(t *testing.T) {
