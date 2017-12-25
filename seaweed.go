@@ -54,7 +54,7 @@ func main() {
 			Action:      weekend,
 		},
 	}
-	app.Run(os.Args)
+	app.RunAndExitOnError()
 }
 
 func forecast(c *cli.Context) error {
