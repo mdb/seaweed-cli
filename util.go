@@ -54,7 +54,7 @@ func printTableWithHeaders(headers []string, data [][]string) {
 	table.Render()
 }
 
-func printForecasts(spot string, forecasts []seaweed.Forecast) {
+func printForecasts(spot string, forecasts []seaweed.Forecast) error {
 	s := [][]string{}
 	for _, each := range forecasts {
 		s = append(s, []string{
@@ -77,6 +77,8 @@ func printForecasts(spot string, forecasts []seaweed.Forecast) {
 	} else {
 		fmt.Printf("No forecast found for spot: %s\n", spot)
 	}
+
+	return nil
 }
 
 func client(c *cli.Context) *seaweed.Client {

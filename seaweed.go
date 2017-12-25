@@ -66,9 +66,7 @@ func forecast(c *cli.Context) error {
 		return err
 	}
 
-	printForecasts(spot, forecast)
-
-	return nil
+	return printForecasts(spot, forecast)
 }
 
 func today(c *cli.Context) error {
@@ -80,9 +78,7 @@ func today(c *cli.Context) error {
 		return err
 	}
 
-	printForecasts(spot, forecast)
-
-	return nil
+	return printForecasts(spot, forecast)
 }
 
 func tomorrow(c *cli.Context) error {
@@ -94,9 +90,7 @@ func tomorrow(c *cli.Context) error {
 		return err
 	}
 
-	printForecasts(spot, forecast)
-
-	return nil
+	return printForecasts(spot, forecast)
 }
 
 func weekend(c *cli.Context) error {
@@ -108,7 +102,5 @@ func weekend(c *cli.Context) error {
 		return err
 	}
 
-	printForecasts(spot, forecast)
-
-	return nil
+	return printForecasts(spot, forecast)
 }
