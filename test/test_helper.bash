@@ -2,7 +2,7 @@ setup() {
   export MAGIC_SEAWEED_API_KEY=abc123
   export MAGIC_SEAWEED_API_SECRET=abc123
   export MAGIC_SEAWEED_CACHE_DIR=test/tmp
-  ew="bin/seaweed-cli"
+  ew="bin/seaweed"
   mkdir -p test/tmp
 }
 

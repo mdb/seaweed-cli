@@ -7,8 +7,14 @@ A Golang-based command line application for fetching surf forecast data from the
 ## Installation
 
 1. Download the latest [release](https://github.com/mdb/seaweed-cli/releases) for your operating system.
-2. Untar the download. For example: `tar -xvf seaweed-cli_0.0.5_darwin_x86_64.tgz`
-3. Move the `seaweed-cli` to your `$PATH`: `mv seaweed-cli /usr/bin/`
+2. Untar the download. For example: `tar -xvf seaweed_0.0.5_darwin_x86_64.tgz`
+3. Move the `seaweed` executable to your `$PATH`: `mv seaweed /usr/bin/`
+
+Alternatively, if you chose to install from source:
+
+```
+make install
+```
 
 ## Usage
 
@@ -20,12 +26,12 @@ You'll need:
 View all commands and options:
 
 ```
-$ seaweed-cli
+$ seaweed
 NAME:
    seaweed-cli - Should I go surfing?
 
 USAGE:
-   seaweed-cli [global options] command [command options] [arguments...]
+   seaweed [global options] command [command options] [arguments...]
 
 VERSION:
    0.0.5

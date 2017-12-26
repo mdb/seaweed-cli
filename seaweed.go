@@ -9,7 +9,7 @@ var version string
 
 func main() {
 	app := cli.NewApp()
-	app.Name = "seaweed-cli"
+	app.Name = "seaweed CLI"
 	app.Version = version
 	app.Usage = "Should I go surfing?"
 	app.Flags = []cli.Flag{

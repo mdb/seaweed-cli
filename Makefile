@@ -1,6 +1,6 @@
-NAME=seaweed-cli
+NAME=seaweed
 HOMEPAGE=https://github.com/mdb/seaweed-cli
-VERSION=0.0.6
+VERSION=0.1.0
 TAG=v$(VERSION)
 ARCH=$(shell uname -m)
 PREFIX=/usr/local
@@ -12,10 +12,10 @@ test: unit acceptance
 
 install: build
 	mkdir -p $(PREFIX)/bin
-	cp -v bin/seaweed-cli $(PREFIX)/bin/seaweed-cli
+	cp -v bin/$(NAME) $(PREFIX)/bin/$(NAME)
 
 uninstall:
-	rm -vf $(PREFIX)/bin/seaweed-cli
+	rm -vf $(PREFIX)/bin/$(NAME)
 
 unit: dependencies
 	go test
