@@ -4,10 +4,13 @@ import (
 	"github.com/urfave/cli"
 )
 
+// passed in via Makefile
+var version string
+
 func main() {
 	app := cli.NewApp()
 	app.Name = "seaweed-cli"
-	app.Version = "0.0.5"
+	app.Version = version
 	app.Usage = "Should I go surfing?"
 	app.Flags = []cli.Flag{
 		cli.StringFlag{

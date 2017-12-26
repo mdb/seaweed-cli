@@ -1,6 +1,6 @@
 NAME=seaweed-cli
 HOMEPAGE=https://github.com/mdb/seaweed-cli
-VERSION=0.0.5
+VERSION=0.0.6
 TAG=v$(VERSION)
 ARCH=$(shell uname -m)
 PREFIX=/usr/local
@@ -24,7 +24,7 @@ acceptance: build
 	bats test
 
 build: dependencies
-	go build -o bin/seaweed-cli
+	go build -ldflags "-X main.version=$(VERSION)" -o bin/$(NAME)
 
 build_releases: dependencies
 	mkdir -p build/Linux  && GOOS=linux  go build -ldflags "-X main.Version=$(VERSION)" -o build/Linux/$(NAME)
