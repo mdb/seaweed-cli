@@ -41,8 +41,19 @@ dependencies:
 	go get github.com/golang/lint/golint
 
 release: build_releases
-	go get github.com/progrium/gh-release
-	gh-release create mdb/$(NAME) $(VERSION) $(shell git rev-parse --abbrev-ref HEAD)
+	go get github.com/aktau/github-release
+	github-release release \
+		--user mdb \
+		--repo seaweed-cli \
+		--tag $(TAG) \
+		--name "$(TAG)" \
+		--description "seaweed-cli version $(VERSION)"
+	ls release/*.tgz | xargs -I FILE github-release upload \
+		--user mdb \
+		--repo seaweed-cli \
+		--tag $(TAG) \
+		--name FILE \
+		--file FILE
 
 lint: dependencies
 	golint -set_exit_status
