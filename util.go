@@ -18,7 +18,7 @@ func cacheAge() time.Duration {
 	var age time.Duration
 	var _ error
 
-	if os.Getenv("MAGIC_SEAWEED_CACHE_AGE") != "" {
+	if len(os.Getenv("MAGIC_SEAWEED_CACHE_AGE")) != 0 {
 		age, _ = time.ParseDuration(os.Getenv("MAGIC_SEAWEED_CACHE_AGE"))
 	} else {
 		age, _ = time.ParseDuration("5m")
@@ -30,7 +30,7 @@ func cacheAge() time.Duration {
 func cacheDir() string {
 	cache := os.Getenv("MAGIC_SEAWEED_CACHE_DIR")
 
-	if cache != "" {
+	if len(cache) != 0 {
 		return cache
 	}
 
@@ -83,17 +83,24 @@ func printForecasts(spot string, forecasts []seaweed.Forecast) error {
 }
 
 func client(c *cli.Context) *seaweed.Client {
+	logLevel := logging.INFO
+	debug := os.Getenv("MAGIC_SEAWEED_DEBUG")
+
+	if len(debug) != 0 {
+		logLevel = logging.DEBUG
+	}
+
 	return &seaweed.Client{
 		APIKey:     os.Getenv("MAGIC_SEAWEED_API_KEY"),
 		HTTPClient: &http.Client{},
 		CacheAge:   cacheAge(),
 		CacheDir:   cacheDir(),
-		Log:        seaweed.NewLogger(logging.INFO),
+		Log:        seaweed.NewLogger(logLevel),
 	}
 }
 
 func validateClient(c *seaweed.Client) {
-	if c.APIKey == "" {
+	if len(c.APIKey) == 0 {
 		fmt.Println("\nPlease set the MAGIC_SEAWEED_API_KEY environment variable")
 		os.Exit(1)
 	}

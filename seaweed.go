@@ -28,6 +28,11 @@ func main() {
 			Usage:  "Duration to cache API responses",
 			EnvVar: "MAGIC_SEAWEED_CACHE_AGE",
 		},
+		cli.StringFlag{
+			Name:   "debug",
+			Usage:  "Print debug output",
+			EnvVar: "MAGIC_SEAWEED_DEBUG",
+		},
 	}
 	app.Commands = []cli.Command{
 		{

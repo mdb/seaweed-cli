@@ -1,6 +1,6 @@
 NAME=seaweed
 HOMEPAGE=https://github.com/mdb/seaweed-cli
-VERSION=0.1.0
+VERSION=0.1.1
 TAG=v$(VERSION)
 ARCH=$(shell uname -m)
 PREFIX=/usr/local
