@@ -53,7 +53,7 @@ GLOBAL OPTIONS:
 Example usage:
 
 ```
-$ seaweed-cli today 392
+$ seaweed today 392
 +--------------------+--------------+--------------+----------------------+------------+
 |        DATE        | SOLID RATING | FADED RATING | PRIMARY SWELL HEIGHT |    WIND    |
 +--------------------+--------------+--------------+----------------------+------------+
