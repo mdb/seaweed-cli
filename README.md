@@ -46,6 +46,7 @@ GLOBAL OPTIONS:
    --apiKey value       Magic Seaweed API key [$MAGIC_SEAWEED_API_KEY]
    --cacheDir value     Directory to cache API responses [$MAGIC_SEAWEED_CACHE_DIR]
    --cacheAge value     Duration to cache API responses [$MAGIC_SEAWEED_CACHE_AGE]
+   --debug value        Print debug output [$MAGIC_SEAWEED_DEBUG]
    --help, -h           show help
    --version, -v        print the version
 ```
