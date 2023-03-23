@@ -4,41 +4,48 @@ VERSION=0.1.2
 TAG=v$(VERSION)
 ARCH=$(shell uname -m)
 PREFIX=/usr/local
-VETARGS?=-all
 
-all: lint vet test
+.DEFAULT_GOAL := test
 
-test: unit acceptance
+test: vet test-fmt unit acceptance
+.PHONY: test
 
 install: build
 	mkdir -p $(PREFIX)/bin
 	cp -v bin/$(NAME) $(PREFIX)/bin/$(NAME)
+.PHONY: install
 
 uninstall:
 	rm -vf $(PREFIX)/bin/$(NAME)
+.PHONY: uninstall
 
-unit: dependencies
+unit:
 	go test
+.PHONY: test
 
 acceptance: build
 	bats test
+.PHONY: acceptance
 
-build: dependencies
+build:
 	go build -ldflags "-X main.version=$(VERSION)" -o bin/$(NAME)
+.PHONY: build
 
-build_releases: dependencies
+build_releases:
 	mkdir -p build/Linux  && GOOS=linux  go build -ldflags "-X main.version=$(VERSION)" -o build/Linux/$(NAME)
 	mkdir -p build/Darwin && GOOS=darwin go build -ldflags "-X main.version=$(VERSION)" -o build/Darwin/$(NAME)
 	rm -rf release && mkdir release
 	tar -zcf release/$(NAME)_$(VERSION)_linux_$(ARCH).tgz -C build/Linux $(NAME)
 	tar -zcf release/$(NAME)_$(VERSION)_darwin_$(ARCH).tgz -C build/Darwin $(NAME)
+.PHONY: build_releases
 
-dependencies:
-	go get -t
-	@go tool cover 2>/dev/null; if [ $$? -eq 3 ]; then \
-		go get -u golang.org/x/tools/cmd/cover; \
-	fi
-	go get github.com/golang/lint/golint
+vet:
+	go vet $(SOURCE)
+.PHONY: vet
+
+test-fmt:
+	test -z $(shell go fmt $(SOURCE))
+.PHONY: test-fmt
 
 release: build_releases
 	go get github.com/aktau/github-release
@@ -54,27 +61,10 @@ release: build_releases
 		--tag $(TAG) \
 		--name FILE \
 		--file FILE
+.PHONY: release
 
 # NOTE: TravisCI will auto-deploy a GitHub release when a tag is pushed
 tag:
 	git tag $(TAG)
 	git push origin $(TAG)
-
-lint: dependencies
-	golint -set_exit_status
-
-# vet runs the Go source code static analysis tool `vet` to find
-# any common errors.
-vet:
-	@go tool vet 2>/dev/null ; if [ $$? -eq 3 ]; then \
-		go get golang.org/x/tools/cmd/vet; \
-	fi
-	@echo "go tool vet $(VETARGS)"
-	@go tool vet $(VETARGS) . ; if [ $$? -eq 1 ]; then \
-		echo ""; \
-		echo "Vet found suspicious constructs. Please check the reported constructs"; \
-		echo "and fix them if necessary before submitting the code for review."; \
-		exit 1; \
-	fi
-
-.PHONY: acceptance build build_releases dependencies install test uninstall unit
+.PHONY: tag
