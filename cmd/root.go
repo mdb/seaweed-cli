@@ -5,7 +5,9 @@ import (
 	"os"
 	"time"
 
+	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/log"
+	"github.com/mdb/seaweed-cli/internal/sw"
 	"github.com/spf13/cobra"
 )
 
@@ -65,6 +67,10 @@ func init() {
 		}
 
 		createModel(cfgFile, debug)
+		p := tea.NewProgram(sw.New(), tea.WithMouseCellMotion())
+		if _, err := p.Run(); err != nil {
+			log.Fatal(err)
+		}
 	}
 }
 
