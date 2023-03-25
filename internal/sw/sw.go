@@ -11,20 +11,24 @@ import (
 )
 
 type SW struct {
-	config config.Config
-	client *seaweed.Client
+	config    config.Config
+	client    *seaweed.Client
+	forecasts []seaweed.Forecast
 }
 
 func New(debug bool, c config.Config) *SW {
 	sw := &SW{
-		c,
-		seaweed.NewClient(os.Getenv("MAGIC_SEAWEED_API_KEY")),
+		config: c,
+		client: seaweed.NewClient(os.Getenv("MAGIC_SEAWEED_API_KEY")),
 	}
 
 	return sw
 }
 
 func (s *SW) Init() tea.Cmd {
+	f, _ := s.client.Forecast(s.config.Spots[0].ID)
+	s.forecasts = f
+
 	return tea.ClearScreen
 }
 
@@ -41,8 +45,7 @@ func (s *SW) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (s *SW) View() string {
-	f, _ := s.client.Forecast(s.config.Spots[0].ID)
-	d := time.Unix(f[0].LocalTimestamp, 0)
+	d := time.Unix(s.forecasts[0].LocalTimestamp, 0)
 
 	return fmt.Sprintf("%s: %s", s.config.Spots[0].Name, d.Format("Monday, January 2, 2006"))
 }
