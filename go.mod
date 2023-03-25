@@ -2,6 +2,9 @@ module github.com/mdb/seaweed-cli
 
 go 1.20
 
-require github.com/mdb/seaweed v0.3.0
+require github.com/mdb/seaweed v0.7.0
 
-require github.com/op/go-logging v0.0.0-20160315200505-970db520ece7 // indirect
+require (
+	github.com/sirupsen/logrus v1.9.0 // indirect
+	golang.org/x/sys v0.0.0-20220715151400-c0bba94af5f8 // indirect
+)
