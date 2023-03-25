@@ -1,70 +1,47 @@
-NAME=seaweed
-HOMEPAGE=https://github.com/mdb/seaweed-cli
-VERSION=0.1.2
-TAG=v$(VERSION)
-ARCH=$(shell uname -m)
-PREFIX=/usr/local
+SOURCE=./...
+GOFMT_FILES?=$$(find . -type f -name '*.go')
+VERSION?=0.1.3
 
-.DEFAULT_GOAL := test
+default: build
 
-test: vet test-fmt unit acceptance
-.PHONY: test
+tools:
+	go install github.com/goreleaser/goreleaser@v1.11.4
+.PHONY: tools
 
-install: build
-	mkdir -p $(PREFIX)/bin
-	cp -v bin/$(NAME) $(PREFIX)/bin/$(NAME)
-.PHONY: install
-
-uninstall:
-	rm -vf $(PREFIX)/bin/$(NAME)
-.PHONY: uninstall
-
-unit:
-	go test
-.PHONY: test
-
-acceptance: build
-	bats test
-.PHONY: acceptance
-
-build:
-	go build -ldflags "-X main.version=$(VERSION)" -o bin/$(NAME)
+build: tools
+	goreleaser release \
+		--snapshot \
+		--skip-publish \
+		--rm-dist
 .PHONY: build
 
-build_releases:
-	mkdir -p build/Linux  && GOOS=linux  go build -ldflags "-X main.version=$(VERSION)" -o build/Linux/$(NAME)
-	mkdir -p build/Darwin && GOOS=darwin go build -ldflags "-X main.version=$(VERSION)" -o build/Darwin/$(NAME)
-	rm -rf release && mkdir release
-	tar -zcf release/$(NAME)_$(VERSION)_linux_$(ARCH).tgz -C build/Linux $(NAME)
-	tar -zcf release/$(NAME)_$(VERSION)_darwin_$(ARCH).tgz -C build/Darwin $(NAME)
-.PHONY: build_releases
+test: vet fmtcheck
+	go test -v -coverprofile=coverage.out -count=1 $(SOURCE)
+.PHONY: test
 
 vet:
 	go vet $(SOURCE)
 .PHONY: vet
 
-test-fmt:
+fmt:
+	gofmt -w $(GOFMT_FILES)
+.PHONY: fmt
+
+fmtcheck:
 	test -z $(shell go fmt $(SOURCE))
-.PHONY: test-fmt
+.PHONY: fmtcheck
 
-release: build_releases
-	go get github.com/aktau/github-release
-	github-release release \
-		--user mdb \
-		--repo seaweed-cli \
-		--tag $(TAG) \
-		--name "$(TAG)" \
-		--description "seaweed-cli version $(VERSION)"
-	ls release/*.tgz | xargs -I FILE github-release upload \
-		--user mdb \
-		--repo seaweed-cli \
-		--tag $(TAG) \
-		--name FILE \
-		--file FILE
-.PHONY: release
+check-tag:
+	./scripts/ensure-unique-version.sh "$(VERSION)"
+.PHONY: check-tag
 
-# NOTE: TravisCI will auto-deploy a GitHub release when a tag is pushed
-tag:
-	git tag $(TAG)
-	git push origin $(TAG)
+tag: check-tag
+	echo "creating git tag $(VERSION)"
+	git tag $(VERSION)
+	git push origin $(VERSION)
 .PHONY: tag
+
+release: tools
+	goreleaser release \
+		--rm-dist
+.PHONY: release

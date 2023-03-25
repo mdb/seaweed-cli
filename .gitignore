@@ -4,3 +4,4 @@ pkg
 test/tmp
 build
 release
+dist
