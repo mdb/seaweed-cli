@@ -1,18 +1,27 @@
 package sw
 
 import (
+	"fmt"
+	"os"
+	"time"
+
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/mdb/seaweed"
 	"github.com/mdb/seaweed-cli/internal/config"
 )
 
 type SW struct {
 	config config.Config
+	client *seaweed.Client
 }
 
-func New(c config.Config) *SW {
-	return &SW{
+func New(debug bool, c config.Config) *SW {
+	sw := &SW{
 		c,
+		seaweed.NewClient(os.Getenv("MAGIC_SEAWEED_API_KEY")),
 	}
+
+	return sw
 }
 
 func (s *SW) Init() tea.Cmd {
@@ -32,5 +41,8 @@ func (s *SW) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (s *SW) View() string {
-	return s.config.Spots[0].ID
+	f, _ := s.client.Forecast(s.config.Spots[0].ID)
+	d := time.Unix(f[0].LocalTimestamp, 0)
+
+	return fmt.Sprintf("%s: %s", s.config.Spots[0].Name, d.Format("Monday, January 2, 2006"))
 }

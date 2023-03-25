@@ -67,36 +67,34 @@ func init() {
 			log.Fatal("Cannot parse debug flag", err)
 		}
 
-		createModel(cfgFile, debug)
-		config, err := config.ParseConfig(cfgFile)
-		if err != nil {
-			log.Fatal("Error reading config", err)
-		}
+		p := createProgram(cfgFile, debug)
 
-		p := tea.NewProgram(sw.New(config), tea.WithMouseCellMotion())
 		if _, err := p.Run(); err != nil {
 			log.Fatal(err)
 		}
 	}
 }
 
-func createModel(configPath string, debug bool) *os.File {
-	var loggerFile *os.File
-
+func createProgram(configPath string, debug bool) *tea.Program {
 	if debug {
-		var fileErr error
-		newConfigFile, fileErr := os.OpenFile("debug.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
-		if fileErr == nil {
+		newConfigFile, err := os.OpenFile("debug.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+
+		if err == nil {
 			log.SetOutput(newConfigFile)
 			log.SetTimeFormat(time.Kitchen)
 			log.SetReportCaller(true)
 			log.SetLevel(log.DebugLevel)
 			log.Debug("Logging to debug.log")
 		} else {
-			//loggerFile, _ = tea.LogToFile("debug.log", "debug")
-			slog.Print("Failed setting up logging", fileErr)
+			_, _ = tea.LogToFile("debug.log", "debug")
+			slog.Print("Failed setting up logging", err)
 		}
 	}
 
-	return loggerFile
+	config, err := config.ParseConfig(cfgFile)
+	if err != nil {
+		log.Fatal("Error reading config", err)
+	}
+
+	return tea.NewProgram(sw.New(debug, config), tea.WithMouseCellMotion())
 }

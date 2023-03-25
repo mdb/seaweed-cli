@@ -15,7 +15,7 @@ func (parser ConfigParser) getDefaultConfig() Config {
 	return Config{
 		Spots: []Spot{{
 			ID:   "391",
-			Name: "Hello",
+			Name: "Ocean City, NJ",
 		}},
 	}
 }
