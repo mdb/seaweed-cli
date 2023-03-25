@@ -2,14 +2,17 @@ package sw
 
 import (
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/mdb/seaweed-cli/internal/config"
 )
 
 type SW struct {
-	mouse tea.MouseMsg
+	config config.Config
 }
 
-func New() *SW {
-	return &SW{}
+func New(c config.Config) *SW {
+	return &SW{
+		c,
+	}
 }
 
 func (s *SW) Init() tea.Cmd {
@@ -29,5 +32,5 @@ func (s *SW) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (s *SW) View() string {
-	return "hello"
+	return s.config.Spots[0].ID
 }

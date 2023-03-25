@@ -7,6 +7,7 @@ import (
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/log"
+	"github.com/mdb/seaweed-cli/internal/config"
 	"github.com/mdb/seaweed-cli/internal/sw"
 	"github.com/spf13/cobra"
 )
@@ -67,7 +68,12 @@ func init() {
 		}
 
 		createModel(cfgFile, debug)
-		p := tea.NewProgram(sw.New(), tea.WithMouseCellMotion())
+		config, err := config.ParseConfig(cfgFile)
+		if err != nil {
+			log.Fatal("Error reading config", err)
+		}
+
+		p := tea.NewProgram(sw.New(config), tea.WithMouseCellMotion())
 		if _, err := p.Run(); err != nil {
 			log.Fatal(err)
 		}
